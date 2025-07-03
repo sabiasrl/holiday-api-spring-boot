@@ -4,6 +4,7 @@ import com.example.holiday.model.Holiday;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -12,12 +13,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class HolidayServiceImpl implements HolidayService {
-    private static final String NAGER_API_URL = "https://date.nager.at/api/v3/PublicHolidays/{year}/{countryCode}";
+    @Value("${NAGER_API_URL:https://date.nager.at/api/v3}")
+    private String nagerApiBaseUrl;
+    private String publicHolidayUrl;
+
     private final RestTemplate restTemplate;
 
     @Autowired
     public HolidayServiceImpl() {
         this.restTemplate = new RestTemplate();
+        this.publicHolidayUrl = nagerApiBaseUrl + "/PublicHolidays/{year}/{countryCode}";
     }
 
     @Override
@@ -70,7 +75,7 @@ public class HolidayServiceImpl implements HolidayService {
 
     private List<Holiday> fetchHolidays(int year, String countryCode) {
         try {
-            Holiday[] holidays = restTemplate.getForObject(NAGER_API_URL, Holiday[].class, year, countryCode);
+            Holiday[] holidays = restTemplate.getForObject(publicHolidayUrl, Holiday[].class, year, countryCode);
             return holidays != null ? Arrays.asList(holidays) : Collections.emptyList();
         } catch (Exception e) {
             return Collections.emptyList();

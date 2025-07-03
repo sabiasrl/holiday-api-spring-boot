@@ -1,20 +1,15 @@
-package com.example.holiday;
+package com.example.holiday.controller;
 
-import com.example.holiday.controller.HolidayController;
 import com.example.holiday.service.HolidayService;
 import com.example.holiday.model.Holiday;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.*;

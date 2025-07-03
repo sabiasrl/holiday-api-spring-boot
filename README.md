@@ -39,6 +39,25 @@ Implement a Spring Boot application for the Accenture developer assessment using
 - `GET /api/holidays/count-not-weekend?year=YYYY&countryCodes=IT,US,...`
 - `GET /api/holidays/common?year=YYYY&countryCode1=IT&countryCode2=US`
 
+## Quick API Verification
+
+After starting the application, you can verify it is running with a sample `curl` command:
+
+- **Get last 3 holidays for US:**
+  ```sh
+  curl http://localhost:8080/api/holidays/last3/US
+  ```
+
+- **Get count of holidays not on weekends for US and IT in 2024:**
+  ```sh
+  curl "http://localhost:8080/api/holidays/count-not-weekend?year=2024&countryCodes=US,IT"
+  ```
+
+- **Get common holidays for US and IT in 2024:**
+  ```sh
+  curl "http://localhost:8080/api/holidays/common?year=2024&countryCode1=US&countryCode2=IT"
+  ```
+
 ## Useful Maven CLI Commands
 
 - **Build the project:**

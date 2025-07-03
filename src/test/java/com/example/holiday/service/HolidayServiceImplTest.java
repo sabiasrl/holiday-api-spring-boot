@@ -1,12 +1,10 @@
-package com.example.holiday;
+package com.example.holiday.service;
 
 import com.example.holiday.model.Holiday;
-import com.example.holiday.service.HolidayServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
