@@ -1,7 +1,8 @@
 package com.example.holiday.service;
 
+import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
-import com.example.holiday.vo.CommonHolidays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

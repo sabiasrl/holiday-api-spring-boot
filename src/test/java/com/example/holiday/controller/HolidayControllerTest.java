@@ -1,8 +1,9 @@
 package com.example.holiday.controller;
 
 import com.example.holiday.service.HolidayService;
+import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
-import com.example.holiday.vo.CommonHolidays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

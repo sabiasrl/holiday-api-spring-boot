@@ -1,7 +1,7 @@
 package com.example.holiday.service;
 
+import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
-import com.example.holiday.vo.CommonHolidays;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

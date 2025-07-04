@@ -1,8 +1,9 @@
 package com.example.holiday.controller;
 
 import com.example.holiday.service.HolidayService;
+import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
-import com.example.holiday.vo.CommonHolidays;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

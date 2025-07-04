@@ -85,15 +85,15 @@ After starting the application, you can verify it is running with a sample `curl
 ## Test and Coverage
 
 This project uses JUnit 5 for unit and integration tests. Code coverage is measured with JaCoCo.
-It executes always:
- - unit tests 
- - integration tests with WireMock: a version with Spring mockMvc and one with RestAssured.
  
 - **Generate the report:**
   ```sh
   mvn test
   # Open target/site/jacoco/index.html in your browser for the report
   ```
+
+![Coverage Report](assets/coverage.png)
+
 
 ## Actuator Endpoints
 

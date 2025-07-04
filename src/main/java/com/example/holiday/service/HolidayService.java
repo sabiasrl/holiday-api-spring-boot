@@ -1,7 +1,7 @@
 package com.example.holiday.service;
 
+import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
-import com.example.holiday.vo.CommonHolidays;
 
 import java.util.List;
 import java.util.Map;
