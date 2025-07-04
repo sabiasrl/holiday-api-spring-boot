@@ -3,12 +3,12 @@ package com.example.holiday.controller;
 import com.example.holiday.service.HolidayService;
 import com.example.holiday.model.Holiday;
 import com.example.holiday.vo.CommonHolidays;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Map;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Holiday API", description = "Endpoints for holiday queries")
 @RestController

@@ -1,8 +1,9 @@
 package com.example.holiday.model;
 
-import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
+
+import lombok.Data;
 
 @Data
 public class Holiday {
