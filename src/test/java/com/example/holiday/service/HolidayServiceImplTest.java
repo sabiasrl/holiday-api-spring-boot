@@ -70,6 +70,46 @@ class HolidayServiceImplTest {
         }
     }
 
+    @Test
+    void testGetLast3Holidays_emptyResult() {
+        doReturn(Arrays.asList()).when(holidayService).fetchHolidays(anyInt(), eq("ZZ"));
+        when(holidayService.getLast3Holidays(anyString())).thenCallRealMethod();
+        List<Holiday> holidays = holidayService.getLast3Holidays("ZZ");
+        assertNotNull(holidays);
+        assertEquals(0, holidays.size());
+    }
+
+    @Test
+    void testGetCountNotWeekend_emptyList() {
+        when(holidayService.getCountNotWeekend(anyInt(), eq(Arrays.asList()))).thenCallRealMethod();
+        Map<String, Integer> result = holidayService.getCountNotWeekend(2024, Arrays.asList());
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testGetCommonHolidays_noCommon() {
+        List<Holiday> us = Arrays.asList(createHoliday(2024, "US", "Independence Day", "Independence Day", "2024-07-04"));
+        List<Holiday> it = Arrays.asList(createHoliday(2024, "IT", "Ferragosto", "Assumption Day", "2024-08-15"));
+        doReturn(us).when(holidayService).fetchHolidays(anyInt(), eq("US"));
+        doReturn(it).when(holidayService).fetchHolidays(anyInt(), eq("IT"));
+        when(holidayService.getCommonHolidays(anyInt(), anyString(), anyString())).thenCallRealMethod();
+        List<Holiday> common = holidayService.getCommonHolidays(2024, "US", "IT");
+        assertNotNull(common);
+        assertTrue(common.isEmpty());
+    }
+
+    @Test
+    void testFetchHolidays_handlesException() {
+        doThrow(new RuntimeException("API error")).when(holidayService).fetchHolidays(anyInt(), eq("FAIL"));
+        try {
+            holidayService.fetchHolidays(2024, "FAIL");
+            fail("Should throw exception");
+        } catch (Exception e) {
+            assertTrue(e instanceof RuntimeException);
+        }
+    }
+
     private Holiday createHoliday(int year, String countryCode, String localName, String name, String dateStr) {
         Holiday h = new Holiday();
         h.setCountryCode(countryCode);
