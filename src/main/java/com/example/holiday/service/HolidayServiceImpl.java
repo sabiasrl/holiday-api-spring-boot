@@ -1,6 +1,7 @@
 package com.example.holiday.service;
 
 import com.example.holiday.model.Holiday;
+import com.example.holiday.vo.CommonHolidays;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -62,23 +63,24 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public List<Holiday> getCommonHolidays(int year, String countryCode1, String countryCode2) {
+    public List<CommonHolidays> getCommonHolidays(int year, String countryCode1, String countryCode2) {
         List<Holiday> holidays1 = fetchHolidays(year, countryCode1);
         List<Holiday> holidays2 = fetchHolidays(year, countryCode2);
-        Map<LocalDate, Holiday> map2 = holidays2.stream().collect(Collectors.toMap(Holiday::getDate, h -> h, (a, b) -> a));
-        List<Holiday> common = new ArrayList<>();
-        for (Holiday h1 : holidays1) {
-            if (map2.containsKey(h1.getDate())) {
-                Holiday h2 = map2.get(h1.getDate());
-                Holiday combined = new Holiday();
-                combined.setDate(h1.getDate());
-                combined.setLocalName(h1.getLocalName() + " / " + h2.getLocalName());
-                combined.setName(h1.getName() + " / " + h2.getName());
-                combined.setCountryCode(h1.getCountryCode() + "," + h2.getCountryCode());
-                common.add(combined);
-            }
+        Map<LocalDate, List<Holiday>> map1 = holidays1.stream().collect(Collectors.groupingBy(Holiday::getDate));
+        Map<LocalDate, List<Holiday>> map2 = holidays2.stream().collect(Collectors.groupingBy(Holiday::getDate));
+        Set<LocalDate> commonDates = new HashSet<>(map1.keySet());
+        commonDates.retainAll(map2.keySet());
+        List<CommonHolidays> result = new ArrayList<>();
+        for (LocalDate date : commonDates) {
+            List<String> localNames = new ArrayList<>();
+            map1.get(date).forEach(h -> localNames.add(h.getLocalName()));
+            map2.get(date).forEach(h -> localNames.add(h.getLocalName()));
+            // Remove duplicates but preserve order
+            List<String> dedupedLocalNames = localNames.stream().distinct().collect(Collectors.toList());
+            result.add(new CommonHolidays(date.toString(), dedupedLocalNames));
         }
-        return common;
+        result.sort(Comparator.comparing(CommonHolidays::getDate));
+        return result;
     }
 
     List<Holiday> fetchHolidays(int year, String countryCode) {
@@ -87,7 +89,7 @@ public class HolidayServiceImpl implements HolidayService {
             return holidays != null ? Arrays.asList(holidays) : Collections.emptyList();
         } catch (Exception e) {
             log.error("Error fetching holidays for year: {}, country: {}", year, countryCode, e);
-            return Collections.emptyList();
+            throw new RuntimeException("Failed to fetch holidays for year: " + year + ", country: " + countryCode, e);
         }
     }
 

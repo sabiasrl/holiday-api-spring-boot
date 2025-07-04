@@ -1,6 +1,7 @@
 package com.example.holiday.service;
 
 import com.example.holiday.model.Holiday;
+import com.example.holiday.vo.CommonHolidays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,11 +63,12 @@ class HolidayServiceImplTest {
     void testGetCommonHolidays() {
         when(holidayService.getCommonHolidays(anyInt(), anyString(), anyString())).thenCallRealMethod();
 
-        List<Holiday> common = holidayService.getCommonHolidays(2024, "US", "IT");
+        List<CommonHolidays> common = holidayService.getCommonHolidays(2024, "US", "IT");
         assertNotNull(common);
-        for (Holiday h : common) {
-            assertNotNull(h.getDate());
-            assertNotNull(h.getLocalName());
+        for (CommonHolidays ch : common) {
+            assertNotNull(ch.getDate());
+            assertNotNull(ch.getLocalNames());
+            assertFalse(ch.getLocalNames().isEmpty());
         }
     }
 
@@ -94,7 +96,7 @@ class HolidayServiceImplTest {
         doReturn(us).when(holidayService).fetchHolidays(anyInt(), eq("US"));
         doReturn(it).when(holidayService).fetchHolidays(anyInt(), eq("IT"));
         when(holidayService.getCommonHolidays(anyInt(), anyString(), anyString())).thenCallRealMethod();
-        List<Holiday> common = holidayService.getCommonHolidays(2024, "US", "IT");
+        List<CommonHolidays> common = holidayService.getCommonHolidays(2024, "US", "IT");
         assertNotNull(common);
         assertTrue(common.isEmpty());
     }
@@ -102,11 +104,18 @@ class HolidayServiceImplTest {
     @Test
     void testFetchHolidays_handlesException() {
         doThrow(new RuntimeException("API error")).when(holidayService).fetchHolidays(anyInt(), eq("FAIL"));
+        when(holidayService.getLast3Holidays(anyString())).thenCallRealMethod();
         try {
             holidayService.fetchHolidays(2024, "FAIL");
             fail("Should throw exception");
         } catch (Exception e) {
             assertTrue(e instanceof RuntimeException);
+            // Accept either direct or wrapped exception
+            if (e.getCause() != null) {
+                assertEquals("API error", e.getCause().getMessage());
+            } else {
+                assertEquals("API error", e.getMessage());
+            }
         }
     }
 

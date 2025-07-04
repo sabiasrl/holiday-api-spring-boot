@@ -82,18 +82,9 @@ After starting the application, you can verify it is running with a sample `curl
   mvn package
   ```
 
-## Test Coverage
+## Test and Coverage
 
 This project uses JUnit 5 for unit and integration tests. Code coverage is measured with JaCoCo.
-
-### Run Tests
-
-- **Run all tests:**
-  ```sh
-  mvn test
-  ```
-
-### Generate Coverage Report
 
 - **Generate the report:**
   ```sh

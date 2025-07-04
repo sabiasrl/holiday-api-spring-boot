@@ -2,6 +2,7 @@ package com.example.holiday.controller;
 
 import com.example.holiday.service.HolidayService;
 import com.example.holiday.model.Holiday;
+import com.example.holiday.vo.CommonHolidays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -54,9 +55,13 @@ class HolidayControllerTest {
 
     @Test
     void testGetCommonHolidays() throws Exception {
-        when(holidayService.getCommonHolidays(eq(2024), eq("US"), eq("IT"))).thenReturn(Arrays.asList(sampleHoliday));
+        CommonHolidays ch = new CommonHolidays("2024-01-01", java.util.Arrays.asList("New Year's Day", "Capodanno"));
+        when(holidayService.getCommonHolidays(eq(2024), eq("US"), eq("IT"))).thenReturn(java.util.Arrays.asList(ch));
         mockMvc.perform(get("/api/holidays/common?year=2024&countryCode1=US&countryCode2=IT"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].countryCode").value("US"));
+                .andExpect(jsonPath("$[0].date").value("2024-01-01"))
+                .andExpect(jsonPath("$[0].localNames").isArray())
+                .andExpect(jsonPath("$[0].localNames[0]").value("New Year's Day"))
+                .andExpect(jsonPath("$[0].localNames[1]").value("Capodanno"));
     }
 }

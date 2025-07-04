@@ -2,6 +2,7 @@ package com.example.holiday.controller;
 
 import com.example.holiday.service.HolidayService;
 import com.example.holiday.model.Holiday;
+import com.example.holiday.vo.CommonHolidays;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class HolidayController {
     // 3. Given a year and 2 country codes, return the deduplicated list of dates celebrated in both countries (date + local names)
     @Operation(summary = "Get common holidays for two countries")
     @GetMapping("/common")
-    public List<Holiday> getCommonHolidays(
+    public List<CommonHolidays> getCommonHolidays(
         @Parameter(description = "Year", required = true)
         @RequestParam int year,
         @Parameter(description = "First country code", required = true)
