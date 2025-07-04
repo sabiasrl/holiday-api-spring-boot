@@ -1,10 +1,15 @@
 package com.example.holiday.service;
 
 import com.example.holiday.model.Holiday;
+
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -12,16 +17,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class HolidayServiceImpl implements HolidayService {
-    @Value("${NAGER_API_URL:https://date.nager.at/api/v3}")
+    @Value("${NAGER_API_URL}")
     private String nagerApiBaseUrl;
     private String publicHolidayUrl;
 
     private final RestTemplate restTemplate;
 
     @Autowired
-    public HolidayServiceImpl() {
-        this.restTemplate = new RestTemplate();
+    public HolidayServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+    
+    @PostConstruct
+    void init (){
         this.publicHolidayUrl = nagerApiBaseUrl + "/PublicHolidays/{year}/{countryCode}";
     }
 
@@ -56,7 +66,6 @@ public class HolidayServiceImpl implements HolidayService {
     public List<Holiday> getCommonHolidays(int year, String countryCode1, String countryCode2) {
         List<Holiday> holidays1 = fetchHolidays(year, countryCode1);
         List<Holiday> holidays2 = fetchHolidays(year, countryCode2);
-        Set<LocalDate> dates1 = holidays1.stream().map(Holiday::getDate).collect(Collectors.toSet());
         Map<LocalDate, Holiday> map2 = holidays2.stream().collect(Collectors.toMap(Holiday::getDate, h -> h, (a, b) -> a));
         List<Holiday> common = new ArrayList<>();
         for (Holiday h1 : holidays1) {
@@ -73,11 +82,12 @@ public class HolidayServiceImpl implements HolidayService {
         return common;
     }
 
-    private List<Holiday> fetchHolidays(int year, String countryCode) {
+    List<Holiday> fetchHolidays(int year, String countryCode) {
         try {
             Holiday[] holidays = restTemplate.getForObject(publicHolidayUrl, Holiday[].class, year, countryCode);
             return holidays != null ? Arrays.asList(holidays) : Collections.emptyList();
         } catch (Exception e) {
+            log.error("Error fetching holidays for year: {}, country: {}", year, countryCode, e);
             return Collections.emptyList();
         }
     }

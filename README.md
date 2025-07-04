@@ -39,6 +39,11 @@ Implement a Spring Boot application for the Accenture developer assessment using
 - `GET /api/holidays/count-not-weekend?year=YYYY&countryCodes=IT,US,...`
 - `GET /api/holidays/common?year=YYYY&countryCode1=IT&countryCode2=US`
 
+## API Specification
+
+- **Swagger UI:** [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- **OpenAPI JSON:** [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+
 ## Quick API Verification
 
 After starting the application, you can verify it is running with a sample `curl` command:
@@ -79,7 +84,7 @@ After starting the application, you can verify it is running with a sample `curl
 
 ## Test Coverage
 
-This project uses JUnit 5 for unit and integration tests. To generate a code coverage report, JaCoCo is recommended.
+This project uses JUnit 5 for unit and integration tests. Code coverage is measured with JaCoCo.
 
 ### Run Tests
 
@@ -88,30 +93,8 @@ This project uses JUnit 5 for unit and integration tests. To generate a code cov
   mvn test
   ```
 
-### Generate Coverage Report (after JaCoCo is configured)
+### Generate Coverage Report
 
-- **Add JaCoCo to your `pom.xml`** (if not already present):
-  ```xml
-  <plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.11</version>
-    <executions>
-      <execution>
-        <goals>
-          <goal>prepare-agent</goal>
-        </goals>
-      </execution>
-      <execution>
-        <id>report</id>
-        <phase>test</phase>
-        <goals>
-          <goal>report</goal>
-        </goals>
-      </execution>
-    </executions>
-  </plugin>
-  ```
 - **Generate the report:**
   ```sh
   mvn test
