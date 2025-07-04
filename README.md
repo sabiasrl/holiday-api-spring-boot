@@ -10,18 +10,18 @@ Implement a Spring Boot application for the Accenture developer assessment using
 2. **Given a year and country codes, for each country return the number of public holidays not falling on weekends (sorted descending).**
 3. **Given a year and 2 country codes, return the deduplicated list of dates celebrated in both countries (date + local names).**
 
-### Requirements
+#### Requirements
 - Production-ready code
 - Test coverage
 - Documentation on how to run
 - Code ready for GitHub
 
-## Features
+### Features
 - Given a country, return the last celebrated 3 holidays (date and name).
 - Given a year and country codes, for each country return a number of public holidays not falling on weekends (sorted descending).
 - Given a year and 2 country codes, return the deduplicated list of dates celebrated in both countries (date + local names).
 
-## How to Run
+# How to Run
 
 1. **Build the project:**
    ```sh
@@ -82,7 +82,7 @@ After starting the application, you can verify it is running with a sample `curl
   mvn package
   ```
 
-## Test and Coverage
+# Test and Coverage
 
 This project uses JUnit 5 for unit and integration tests. Code coverage is measured with JaCoCo.
  
@@ -108,3 +108,6 @@ You can customize which endpoints are enabled or exposed in `application.propert
 ## Notes
 - Uses Java 17 and Spring Boot 3.x
 - Calls the public Nager.Date API (https://date.nager.at)
+
+# Reactive version
+check also the branch `features/reactive-version` also production ready, with Srping webflux. 
