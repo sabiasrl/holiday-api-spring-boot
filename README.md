@@ -101,6 +101,16 @@ This project uses JUnit 5 for unit and integration tests. Code coverage is measu
   # Open target/site/jacoco/index.html in your browser for the report
   ```
 
+## Actuator Endpoints
+
+Spring Boot Actuator provides production-ready endpoints for monitoring and management.
+
+- **Health check:** [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
+- **Info:** [http://localhost:8080/actuator/info](http://localhost:8080/actuator/info)
+- **All endpoints:** [http://localhost:8080/actuator](http://localhost:8080/actuator)
+
+You can customize which endpoints are enabled or exposed in `application.properties`.
+
 ## Notes
 - Uses Java 17 and Spring Boot 3.x
 - Calls the public Nager.Date API (https://date.nager.at)
