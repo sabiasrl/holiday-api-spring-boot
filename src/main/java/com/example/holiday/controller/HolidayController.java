@@ -1,12 +1,15 @@
 package com.example.holiday.controller;
 
-import com.example.holiday.service.HolidayService;
+import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
-import com.example.holiday.vo.CommonHolidays;
+import com.example.holiday.service.HolidayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +26,7 @@ public class HolidayController {
     // 1. Given a country, return the last celebrated 3 holidays (date and name).
     @Operation(summary = "Get last 3 holidays for a country")
     @GetMapping("/last3/{countryCode}")
-    public List<Holiday> getLast3Holidays(
+    public Mono<List<Holiday>> getLast3Holidays(
         @Parameter(description = "Country code", required = true)
         @PathVariable String countryCode) {
         return holidayService.getLast3Holidays(countryCode);
@@ -32,7 +35,7 @@ public class HolidayController {
     // 2. Given a year and country codes, for each country return a number of public holidays not falling on weekends (sort in descending order).
     @Operation(summary = "Get count of holidays not on weekends for countries")
     @GetMapping("/count-not-weekend")
-    public Map<String, Integer> getCountNotWeekend(
+    public Mono<Map<String, Integer>> getCountNotWeekend(
         @Parameter(description = "Year", required = true)
         @RequestParam int year,
         @Parameter(description = "Comma-separated country codes", required = true)
@@ -43,7 +46,7 @@ public class HolidayController {
     // 3. Given a year and 2 country codes, return the deduplicated list of dates celebrated in both countries (date + local names)
     @Operation(summary = "Get common holidays for two countries")
     @GetMapping("/common")
-    public List<CommonHolidays> getCommonHolidays(
+    public Flux<CommonHolidays> getCommonHolidays(
         @Parameter(description = "Year", required = true)
         @RequestParam int year,
         @Parameter(description = "First country code", required = true)
