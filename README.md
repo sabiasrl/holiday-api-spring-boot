@@ -95,6 +95,8 @@ It executes always:
   # Open target/site/jacoco/index.html in your browser for the report
   ```
 
+![Coverage Report](assets/coverage.png)
+
 ## Actuator Endpoints
 
 Spring Boot Actuator provides production-ready endpoints for monitoring and management.
