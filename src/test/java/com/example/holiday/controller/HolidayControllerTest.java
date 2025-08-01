@@ -3,6 +3,8 @@ package com.example.holiday.controller;
 import com.example.holiday.service.HolidayService;
 import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
+import com.example.holiday.vo.CommonHolidayVO;
+import com.example.holiday.mapper.CommonHolidayMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,9 @@ class HolidayControllerTest {
 
     @MockBean
     private HolidayService holidayService;
+
+    @MockBean
+    private CommonHolidayMapper commonHolidayMapper;
 
     private Holiday sampleHoliday;
 
@@ -56,7 +61,9 @@ class HolidayControllerTest {
     @Test
     void testGetCommonHolidays() throws Exception {
         CommonHolidays ch = new CommonHolidays("2024-01-01", java.util.Arrays.asList("New Year's Day", "Capodanno"));
+        CommonHolidayVO chVO = new CommonHolidayVO("2024-01-01", java.util.Arrays.asList("New Year's Day", "Capodanno"));
         when(holidayService.getCommonHolidays(eq(2024), eq("US"), eq("IT"))).thenReturn(java.util.Arrays.asList(ch));
+        when(commonHolidayMapper.toVOList(java.util.Arrays.asList(ch))).thenReturn(java.util.Arrays.asList(chVO));
         mockMvc.perform(get("/api/holidays/common?year=2024&countryCode1=US&countryCode2=IT"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].date").value("2024-01-01"))
@@ -107,7 +114,10 @@ class HolidayControllerTest {
     void testGetCommonHolidays_extensive() throws Exception {
         CommonHolidays ch1 = new CommonHolidays("2024-01-01", java.util.Arrays.asList("New Year's Day", "Capodanno"));
         CommonHolidays ch2 = new CommonHolidays("2024-12-25", java.util.Arrays.asList("Christmas Day", "Natale"));
+        CommonHolidayVO ch1VO = new CommonHolidayVO("2024-01-01", java.util.Arrays.asList("New Year's Day", "Capodanno"));
+        CommonHolidayVO ch2VO = new CommonHolidayVO("2024-12-25", java.util.Arrays.asList("Christmas Day", "Natale"));
         when(holidayService.getCommonHolidays(eq(2024), eq("US"), eq("IT"))).thenReturn(java.util.Arrays.asList(ch1, ch2));
+        when(commonHolidayMapper.toVOList(java.util.Arrays.asList(ch1, ch2))).thenReturn(java.util.Arrays.asList(ch1VO, ch2VO));
         mockMvc.perform(get("/api/holidays/common?year=2024&countryCode1=US&countryCode2=IT"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].date").value("2024-01-01"))

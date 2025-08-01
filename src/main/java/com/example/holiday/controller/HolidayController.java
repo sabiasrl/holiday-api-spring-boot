@@ -3,6 +3,8 @@ package com.example.holiday.controller;
 import com.example.holiday.service.HolidayService;
 import com.example.holiday.model.CommonHolidays;
 import com.example.holiday.model.Holiday;
+import com.example.holiday.vo.CommonHolidayVO;
+import com.example.holiday.mapper.CommonHolidayMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,9 +18,11 @@ import java.util.Map;
 @RequestMapping("/api/holidays")
 public class HolidayController {
     private final HolidayService holidayService;
+    private final CommonHolidayMapper commonHolidayMapper;
 
-    public HolidayController(HolidayService holidayService) {
+    public HolidayController(HolidayService holidayService, CommonHolidayMapper commonHolidayMapper) {
         this.holidayService = holidayService;
+        this.commonHolidayMapper = commonHolidayMapper;
     }
 
     // 1. Given a country, return the last celebrated 3 holidays (date and name).
@@ -44,13 +48,14 @@ public class HolidayController {
     // 3. Given a year and 2 country codes, return the deduplicated list of dates celebrated in both countries (date + local names)
     @Operation(summary = "Get common holidays for two countries")
     @GetMapping("/common")
-    public List<CommonHolidays> getCommonHolidays(
+    public List<CommonHolidayVO> getCommonHolidays(
         @Parameter(description = "Year", required = true)
         @RequestParam int year,
         @Parameter(description = "First country code", required = true)
         @RequestParam String countryCode1,
         @Parameter(description = "Second country code", required = true)
         @RequestParam String countryCode2) {
-        return holidayService.getCommonHolidays(year, countryCode1, countryCode2);
+        List<CommonHolidays> commonHolidays = holidayService.getCommonHolidays(year, countryCode1, countryCode2);
+        return commonHolidayMapper.toVOList(commonHolidays);
     }
 }
